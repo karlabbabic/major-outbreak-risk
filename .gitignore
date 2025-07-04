@@ -1,0 +1,14 @@
+# R session and project files
+.Rhistory
+.RData
+.Rproj.user/
+
+# Temporary or large environment saves
+*.RDataTmp
+*.RDataTmp*
+*.RData
+*.rds
+
+# System files
+.DS_Store
+Thumbs.db
