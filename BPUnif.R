@@ -31,6 +31,7 @@ compute_likelihood <- function(R, I1, I2, I3, w) {
       lambda_t <- lambda_t + R * I[t - s] * w[s]
     }
     likelihood <- likelihood * (lambda_t^I[t] * exp(-lambda_t) / factorial(I[t]))
+    #likelihood <- likelihood * (lambda_t^I[t] * exp(-lambda_t) / exp(lgamma(I[t] + 1))) #(Poisson-based)
   }
   
   return(likelihood)
@@ -50,16 +51,14 @@ posterior_R <- function(R, I1, I2, I3, w) {
 compute_bayesian_outbreak_prob <- function(I1, I2, I3, w1, w2) {
   w <- c(w1, w2)
   
-  integrand <- function(R_vals) {
-    sapply(R_vals, function(R) {
-      posterior_R(R, I1, I2, I3, w) *
-        compute_major_outbreak_prob(R, I1, I2, I3, w1, w2)
-    })
-  }
+  integrand <- Vectorize(function(R) {
+    posterior_R(R, I1, I2, I3, w) *
+      compute_major_outbreak_prob(R, I1, I2, I3, w1, w2)
+  })
   
-  normaliser <- function(R_vals) {
-    sapply(R_vals, function(R) posterior_R(R, I1, I2, I3, w))
-  }
+  normaliser <- Vectorize(function(R) {
+    posterior_R(R, I1, I2, I3, w)
+  })
   
   norm_constant <- integrate(normaliser, lower = 1, upper = 2)$value
   result <- integrate(integrand, lower = 1, upper = 2)$value / norm_constant
