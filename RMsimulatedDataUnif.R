@@ -37,7 +37,7 @@ for (sim in 1:n_sim) {
   
   for (t in 2:T) {
     lambda <- 0
-    for (s in 1:min(t - 1, 5)) {
+    for (s in 1:min(t - 1, S)) {
       lambda <- lambda + w[s] * I[t - s]
     }
     I[t] <- rpois(1, R * lambda)
@@ -49,7 +49,7 @@ for (sim in 1:n_sim) {
   #  I[t] <- rpois(1, R * lambda)
   #}
   
-  # Store first 3 days and outbreak flag
+  # Store first 3 days and outbreak flag OR for 5 days change
   summary_mat_prior[sim, 1:3] <- I[1:3]
   summary_mat_prior[sim, 4] <- as.integer(sum(I) > threshold)
 }
