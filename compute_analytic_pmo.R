@@ -1,4 +1,4 @@
-# Analytic PMO calculation for candidate trajectories
+# Analytic PMO calculation
 
 library(data.table)
 
@@ -151,7 +151,7 @@ generate_candidate_sequences <- function(Y, buffer, I1 = NULL, fix_I1 = FALSE) {
   grid
 }
 
-# Settings
+# Settings (example for 3 weeks of incidence data)
 Y_obs <- c(1, 0, 0)
 buffer <- 25
 
